@@ -1,0 +1,10 @@
+---
+- name: "Add entries to /etc/hosts"
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: "Build hosts file"
+      become: yes
+      lineinfile: dest=/etc/hosts regexp='.*{{ item }}$' line="{{ hostvars[item]['ansible_host'] }} {{item}}" state=present
+      with_items:
+        - "{{ groups['all'] }}"
